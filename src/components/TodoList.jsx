@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 
 function TodoList() {
   const [todos, setTodos] = useState([]);
-  const [newTodo, setNewTodo] = useState('');
+  const [temps, setTemps] = useState([])
+   const [newTodo, setNewTodo] = useState('');
 
   const handleNewTodoChange = (e) => {
     setNewTodo(e.target.value);
@@ -20,6 +21,8 @@ function TodoList() {
       };
 
       setTodos([...todos, newTodoItem]);
+      setTemps([...todos, newTodoItem])
+
       setNewTodo('');
     }
   };
@@ -27,6 +30,8 @@ function TodoList() {
   const handleDeleteTodo = (todoId) => {
     const updatedTodos = todos.filter((todo) => todo.id !== todoId);
     setTodos(updatedTodos);
+    setTemps(updatedTodos)
+
   };
 
   const handleUpdateTodo = (todoId) => {
@@ -37,6 +42,7 @@ function TodoList() {
       return todo;
     });
     setTodos(updatedTodos);
+    setTemps(updatedTodos)
   };
 
   const handlePriorityChange = (todoId, priority) => {
@@ -47,7 +53,24 @@ function TodoList() {
       return todo;
     });
     setTodos(updatedTodos);
+    setTemps(updatedTodos)
   };
+
+  const handleSearchTodo = (event) => {
+
+
+    if(event.target.value === "") {
+      setTodos(temps);
+      return;
+    }
+    const newTodos = temps.filter(todo => {
+      if(todo.title.toLowerCase().includes(event.target.value.toLowerCase())) {
+        return todo
+      }
+    })
+
+    setTodos(newTodos)
+  }
 
   return (
     <div>
@@ -55,6 +78,10 @@ function TodoList() {
       <form onSubmit={handleAddTodo}>
         <input type="text" value={newTodo} onChange={handleNewTodoChange} placeholder="New Todo" required />
         <button type="submit">Add</button>
+      </form>
+      <form >
+        <input type="text"  onChange={handleSearchTodo} placeholder="Search todos" required />
+        {/* <button type="submit">Search</button> */}
       </form>
       <ul>
         {todos.map((todo) => (

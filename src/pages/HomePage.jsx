@@ -6,7 +6,6 @@ function HomePage() {
     <div>
       <h1>To-do List</h1>
       <TodoList />
-      
     </div>
   );
 }
